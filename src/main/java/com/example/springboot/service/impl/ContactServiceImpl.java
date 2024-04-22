@@ -53,7 +53,12 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Optional<ContactModel> findOne(String id){
-        return contactRepository.findById(UUID.fromString(id));
+        return contactRepository.findById(convertIdToUUID(id));
+    }
+
+    @Override
+    public List<ContactModel> findByUserId(String user_id){
+        return  contactRepository.findByUserId(convertIdToUUID(user_id));
     }
 
     @Override

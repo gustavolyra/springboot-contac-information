@@ -1,5 +1,7 @@
 package com.example.springboot.models.dtos;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +15,16 @@ import java.util.UUID;
 @Builder
 public class ContactDto {
 
-   private UUID id;
+     private UUID id;
 
+    @NotBlank
     private String name;
 
+    @Email
+    @NotBlank
     private String email;
 
+    @NotBlank
     private String phone;
 
     private UserDto user;

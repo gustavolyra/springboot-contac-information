@@ -55,6 +55,66 @@ public class ContactControllerIntegrationTest {
     }
 
     @Test
+    public void testThatWhenCreatingUserShouldReturn400ErrorIfEmailInvalid() throws Exception {
+        ContactDto testContactEmailInvalid = TestDataUtils.createTestContactDtoInvalidEmail(null);
+
+        String createContactJson = objectMapper.writeValueAsString(testContactEmailInvalid);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createContactJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatWhenCreatingUserShouldReturn400ErrorIfEmailNull() throws Exception {
+        ContactDto testContactEmailNull = TestDataUtils.createTestContactDtoEmailNull(null);
+
+        String createContactJson = objectMapper.writeValueAsString(testContactEmailNull);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createContactJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatWhenCreatingUserShouldReturn400ErrorIfPhoneNull() throws Exception {
+        ContactDto testContactPhoneNull = TestDataUtils.createTestContactDtoPhoneNull(null);
+
+        String createContactJson = objectMapper.writeValueAsString(testContactPhoneNull);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createContactJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
+    public void testThatWhenCreatingUserShouldReturn400ErrorIfNameNull() throws Exception {
+        ContactDto testContactNameNull = TestDataUtils.createTestContactDtoNameNull(null);
+
+        String createContactJson = objectMapper.writeValueAsString(testContactNameNull);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/contact")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(createContactJson)
+        ).andExpect(
+                MockMvcResultMatchers.status().isBadRequest()
+        );
+    }
+
+    @Test
     public void testThatCreateContactReturnsCreatedContact() throws Exception {
         ContactDto testContact1 = TestDataUtils.createTestContactDto(null);
 

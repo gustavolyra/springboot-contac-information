@@ -16,6 +16,8 @@ public interface ContactService {
 
     List<ContactModel> findAllContacts();
 
+    List<ContactModel> findByUserId(String user_id);
+
     Page<ContactModel> findAll(Pageable pageable);
 
     Optional<ContactModel> findOne(String id);
@@ -25,4 +27,6 @@ public interface ContactService {
     UUID convertIdToUUID(String id);
 
     void delete(UUID id);
+
+
 }

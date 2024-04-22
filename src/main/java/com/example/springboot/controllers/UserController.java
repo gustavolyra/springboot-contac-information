@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @RestController
 public class UserController {
 
@@ -30,10 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/users/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody @Valid UserDto userDto){
+    public ResponseEntity registerUser(@RequestBody @Valid UserDto userDto){
         UserModel userModel = userMapper.mapFrom(userDto);
-        UserModel savedUserModel = userService.saveUser(userModel);
-        return new ResponseEntity<>(userMapper.mapTo(savedUserModel), HttpStatus.CREATED);
+        if(userService.isBirthDayValid(userModel.getBirthday())) {
+            UserModel savedUserModel = userService.saveUser(userModel);
+            return new ResponseEntity<>(userMapper.mapTo(savedUserModel), HttpStatus.CREATED);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Date should not be in the future.");
     }
 
     @GetMapping("/users")
@@ -53,7 +53,7 @@ public class UserController {
 
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("id") String id, @RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> updateUser(@PathVariable("id") String id, @RequestBody @Valid UserDto userDto){
         final UUID id_uudi = userService.convertIdToUUID(id);
 
         if(!userService.isExists(id_uudi)){

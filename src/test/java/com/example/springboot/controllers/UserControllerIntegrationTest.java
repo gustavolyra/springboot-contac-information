@@ -55,6 +55,63 @@ public class UserControllerIntegrationTest {
         );
     }
 
+    @Test
+    public void testThatWhenCreatingUserShouldReturn400ErrorIfCPFInvalid() throws Exception{
+        UserModel testUserInvalidCpf = TestDataUtils.createTestUserModelInvalidCPF();
+
+        String userJson = objectMapper.writeValueAsString(testUserInvalidCpf);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.cpf").value("invalid Brazilian individual taxpayer registry number (CPF)")
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testThatWhenCreatingUserShouldReturnErrorIfCPFNull() throws Exception{
+        UserModel testUserNullCpf = TestDataUtils.createTestUserModelNullCPF();
+
+        String userJson = objectMapper.writeValueAsString(testUserNullCpf);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.cpf").value("invalid Brazilian individual taxpayer registry number (CPF)")
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testThatWhenCreatingUserShouldReturnErrorIfNameNull() throws Exception{
+        UserModel testUserNullName = TestDataUtils.createTestUserModelNullName();
+
+        String userJson = objectMapper.writeValueAsString(testUserNullName);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value("must not be blank")
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
+
+    @Test
+    public void testThatWhenCreatingUserShouldReturnErrorIfBirthdayInFuture() throws Exception{
+        UserModel testUserFutureBirthday = TestDataUtils.createTestUserModelFutureBirthday();
+
+        String userJson = objectMapper.writeValueAsString(testUserFutureBirthday);
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.post("/users/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(userJson)
+        ).andExpect(MockMvcResultMatchers.status().isBadRequest());
+    }
 
     @Test
     public void testThatCreateUserSuccessfullyReturnsSavedUser() throws Exception {
@@ -118,26 +175,26 @@ public class UserControllerIntegrationTest {
         ).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-//    @Test
-//    public void testThatGetUserReturnsUserWhenExist() throws Exception {
-//        UserModel user = TestDataUtils.createTestUserModel1();
-//        userService.saveUser(user);
-//
-//        List<UserModel> userList = userService.findAllUsers();
-//
-//        mockMvc.perform(
-//                MockMvcRequestBuilders.get("/users"+ userList.get(1).getId())
-//                        .contentType(MediaType.APPLICATION_JSON)
-//        ).andExpect(
-//                MockMvcResultMatchers.jsonPath("$.id").value(userList.get(1).getId().toString())
-//        ).andExpect(
-//                MockMvcResultMatchers.jsonPath("$.name").value(userList.get(1).getName())
-//        ).andExpect(
-//                MockMvcResultMatchers.jsonPath("$.cpf").value(userList.get(1).getCpf())
-//        ).andExpect(
-//                MockMvcResultMatchers.jsonPath("$.birthday").isString() //TODO
-//        );
-//    }
+    @Test
+    public void testThatGetUserReturnsUserWhenExist() throws Exception {
+        UserModel user = TestDataUtils.createTestUserModel1();
+        userService.saveUser(user);
+
+        List<UserModel> userList = userService.findAllUsers();
+
+        mockMvc.perform(
+                MockMvcRequestBuilders.get("/users/"+ userList.get(1).getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.id").value(userList.get(1).getId().toString())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.name").value(userList.get(1).getName())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.cpf").value(userList.get(1).getCpf())
+        ).andExpect(
+                MockMvcResultMatchers.jsonPath("$.birthday").isString() //TODO
+        );
+    }
 
     @Test
     public void testThatGetUserReturnsHttp404WhenUserDoesNotExists() throws Exception {

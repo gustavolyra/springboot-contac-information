@@ -42,7 +42,6 @@ public class ContactController {
        return new ResponseEntity<>(savedContactDto, HttpStatus.CREATED);
     }
 
-    //TODO retornando todos os contantos e não apenas do userId
     @GetMapping("/contact/all/{userId}")
     public List<ContactDto> getAllContacts(@PathVariable String userId){
         List<ContactModel> contactList = contactService.findAllContacts();
@@ -54,6 +53,13 @@ public class ContactController {
         Page<ContactModel> contactPage = contactService.findAll(pageable);
         return contactPage.map(contactMapper::mapTo);
     }
+
+    @GetMapping("/contact/user/{userId}")
+    public List<ContactDto> getAllContactsFromUser(@PathVariable String userId){
+        List<ContactModel> contactList = contactService.findByUserId(userId);
+        return contactList.stream().map(contactMapper::mapTo).collect(Collectors.toList());
+    }
+
 
     @GetMapping("/contact/{id}")
     public ResponseEntity<ContactDto> getOneContact(@PathVariable("id") String id){

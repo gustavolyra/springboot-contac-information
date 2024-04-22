@@ -3,8 +3,13 @@ package com.example.springboot.service.impl;
 import com.example.springboot.models.UserModel;
 import com.example.springboot.repositories.UserRepository;
 import com.example.springboot.service.UserService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +29,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(userModel);
     }
 
+    public Boolean isBirthDayValid(Date birthday){
+        LocalDate localDate = birthday.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        LocalDate today = LocalDate.now();
+
+        return localDate.isBefore(today);
+    }
+
     @Override
     public List<UserModel> findAllUsers() {
         return StreamSupport.stream(userRepository
@@ -31,6 +44,11 @@ public class UserServiceImpl implements UserService {
                                 .spliterator(),
                         false)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<UserModel> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
