@@ -3,7 +3,6 @@ package com.example.springboot.controllers;
 
 import com.example.springboot.mappers.Mapper;
 import com.example.springboot.models.ContactModel;
-import com.example.springboot.models.UserModel;
 import com.example.springboot.models.dtos.ContactDto;
 import com.example.springboot.service.ContactService;
 import jakarta.validation.Valid;

@@ -81,27 +81,6 @@ public final class TestDataUtils {
                 .build();
     }
 
-    public static UserModel createTestUserModelForceUUID(final UUID id) throws ParseException {
-        DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        return UserModel.builder()
-                .id(id)
-                .name("Maria")
-                .cpf("761.825.500-82")
-                .birthday(dataFormat.parse("1999-01-01"))
-                .build();
-    }
-
-    public static ContactModel createTestContactModelForceUUID(final UserModel userModel, final UUID id){
-        return ContactModel.builder()
-                .id(id)
-                .email("test@test.com")
-                .phone("99 99999-9999")
-                .name("Contact A")
-                .user(userModel)
-                .build();
-    }
-
     public static ContactModel createTestContactModel1(final UserModel userModel){
         return ContactModel.builder()
                 .id(UUID.randomUUID())

@@ -2,7 +2,6 @@ package com.example.springboot.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

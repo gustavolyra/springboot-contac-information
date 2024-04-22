@@ -1,6 +1,5 @@
 package com.example.springboot.service;
 
-import com.example.springboot.models.ContactModel;
 import com.example.springboot.models.UserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +17,11 @@ public interface UserService {
 
     Page<UserModel> findAll(Pageable pageable);
 
-    public Boolean isBirthDayValid(Date birthday);
+    Boolean isBirthDayValid(Date birthday);
 
     Optional<UserModel> findOne(String id);
 
-    boolean isExists(UUID id);
+    Boolean isExists(UUID id);
 
     UUID convertIdToUUID(String id);
 

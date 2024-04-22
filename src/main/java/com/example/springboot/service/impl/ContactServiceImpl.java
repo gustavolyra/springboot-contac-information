@@ -1,7 +1,6 @@
 package com.example.springboot.service.impl;
 
 import com.example.springboot.models.ContactModel;
-import com.example.springboot.models.UserModel;
 import com.example.springboot.repositories.ContactRepository;
 import com.example.springboot.service.ContactService;
 import org.springframework.data.domain.Page;
